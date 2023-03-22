@@ -20,8 +20,12 @@ public class BookController {
 
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<DetailedBookDTO> getAllBooks(){return bookService.getAllBooks();}
+    public List<BookDTO> getAllBooks(){return bookService.getAllBooks();}
 
+    @GetMapping(path = "/{isbn}/showDetails")
+    public DetailedBookDTO getOneBook(@PathVariable String isbn){
+        return bookService.getDetailedBookByIsbn(isbn);
+    }
 
     @GetMapping(params = "isbn")
     @ResponseStatus(HttpStatus.OK)
@@ -29,37 +33,34 @@ public class BookController {
         return bookService.getABookByIsbn(isbn);
     }
 
-    @GetMapping(params = "authorFirstName")
-    @ResponseStatus(HttpStatus.OK)
-    public List<BookDTO> getBookByAuthorFirstName(@RequestParam String authorFirstName){
-        return bookService.getABookByAuthorFirstName(authorFirstName);
-    }
-    @GetMapping(params = "authorLastName")
-    @ResponseStatus(HttpStatus.OK)
-    public List<BookDTO> getABookByAuthorLastName(@RequestParam String authorLastName){
-        return bookService.getABookByAuthorLastName(authorLastName);
-    }
-    @GetMapping(params = {"title", "showDetails"})
+    @GetMapping(params = "title")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getBookByTitle(@RequestParam String title){
         return bookService.getABookByTitle(title);
     }
 
+    @GetMapping(params = "author")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDTO> getBookByAuthor(@RequestParam String author){
+        return bookService.getABookByAuthor(author);
+    }
+
+    /*---Handling exception---*/
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public DetailedBookDTO createBook(@RequestBody DetailedBookDTO detailedBookDTO){
-        return bookService.registerABook(detailedBookDTO);
+    public BookDTO createBook(@RequestBody CreateBookDTO createBookDTO){
+        return bookService.registerABook(createBookDTO);
     }
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteABook(@PathVariable("id")int id){
-        bookService.deleteABook(id);
+    public BookDTO deleteABook(@PathVariable("id") int id){
+        return bookService.deleteABook(id);
     }
 
-    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
+    @PutMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public BookDTO updateABook(@PathVariable("id") int id, @RequestBody UpdateBookDTO updateBookDTO){
-        return bookService.updateABook(id, updateBookDTO);
+    public DetailedBookDTO updateABook(@RequestBody UpdateBookDTO updateBookDTO){
+        return bookService.updateABook(updateBookDTO);
     }
 }

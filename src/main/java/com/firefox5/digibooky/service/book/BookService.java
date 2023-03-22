@@ -2,6 +2,7 @@ package com.firefox5.digibooky.service.book;
 
 
 import com.firefox5.digibooky.api.book.BookDTO;
+import com.firefox5.digibooky.api.book.CreateBookDTO;
 import com.firefox5.digibooky.api.book.DetailedBookDTO;
 import com.firefox5.digibooky.api.book.UpdateBookDTO;
 import com.firefox5.digibooky.domain.book.Book;
@@ -14,54 +15,66 @@ import java.util.List;
 public class BookService {
     private final BookRepository repository;
     private final BookMapper mapper;
+    private final Parsing parsing;
 
-    public BookService(BookRepository repository, BookMapper mapper){
+    public BookService(BookRepository repository, BookMapper mapper, Parsing parsing) {
         this.repository = repository;
         this.mapper = mapper;
+        this.parsing = parsing;
     }
 
 
-    public List<DetailedBookDTO> getAllBooks() {
-        return mapper.toDetailedBookDtos(repository.getAll());
+    public List<BookDTO> getAllBooks() {
+        return mapper.toDtos(repository.getAll());
     }
 
-    public List<BookDTO> getABookByIsbn(String isbn){
-        return mapper.toDtos(repository.getByIsbn(isbn));
+    public List<BookDTO> getABookByIsbn(String isbn) {
+        return parsing.checkForWildcardsInIsbn(isbn);
     }
 
-    public List<BookDTO> getABookByTitle(String title){
-        return mapper.toDtos(repository.getByTitle(title));
+    public List<BookDTO> getABookByTitle(String title) {
+        return parsing.checkForWildcardsInTitle(title);
     }
 
-    public List<BookDTO> getABookByAuthorFirstName(String author){
-        return mapper.toDtos(repository.getByAuthorFirstName(author));
+    public List<BookDTO> getABookByAuthor(String author) {
+        return parsing.checkForWildcardsInAuthor(author);
     }
 
-    public List<BookDTO> getABookByAuthorLastName(String author){
-        return mapper.toDtos(repository.getByAuthorLastName(author));
-    }
-
-    public BookDTO updateABook(int id, UpdateBookDTO updateBookDTO){
-        Book updatedBook = repository.getById(id);
-        updatedBook.setTitle(updateBookDTO.getTitle());
-        updatedBook.setAuthor(updateBookDTO.getAuthor());
-        updatedBook.setSmallSummary(updateBookDTO.getSmallSummary());
-        repository.save(updatedBook);
-        return mapper.toDto(updatedBook);
+    /*---Throw exception when no book is found---*/
+    public DetailedBookDTO updateABook(UpdateBookDTO updateBookDTO) {
+        try {
+            Book updatedBook = repository.getByIsbn(updateBookDTO.getIsbn()).get(0);
+            updatedBook.setTitle(updateBookDTO.getTitle());
+            updatedBook.setAuthor(updateBookDTO.getAuthor());
+            updatedBook.setSmallSummary(updateBookDTO.getSmallSummary());
+            updatedBook.setAvailability(updateBookDTO.isAvailability());
+            return mapper.toDetailedDto(updatedBook);
+        } catch (IndexOutOfBoundsException exception) {
+            throw new IllegalArgumentException("No book found.");
+        }
     }
 
     /*---If not librarian get a 403 custom message---*/
-    public DetailedBookDTO registerABook(DetailedBookDTO detailedBookDTO){
+    public BookDTO registerABook(CreateBookDTO createBookDTO) {
         Book newBook = new Book(
-                detailedBookDTO.getTitle(),
-                detailedBookDTO.getIsbn(),
-                detailedBookDTO.getAuthor(),
-                detailedBookDTO.getSmallSummary());
+                createBookDTO.getTitle(),
+                createBookDTO.getIsbn(),
+                createBookDTO.getAuthor(),
+                createBookDTO.getSmallSummary(),
+                true);
         repository.save(newBook);
-        return mapper.toDetailedBookDto(newBook);
+        return mapper.toDto(newBook);
     }
 
-    public void deleteABook(int id){
-        repository.delete(id);
+    public BookDTO deleteABook(int id) {
+        return mapper.toDto(repository.delete(repository.getById(id)));
+    }
+
+    public DetailedBookDTO getDetailedBookByIsbn(String isbn) {
+        try {
+            return mapper.toDetailedDto(repository.getByIsbn(isbn).get(0));
+        } catch (IndexOutOfBoundsException exception) {
+            throw new IllegalArgumentException("No book found.");
+        }
     }
 }

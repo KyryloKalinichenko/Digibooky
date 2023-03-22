@@ -1,19 +1,19 @@
 package com.firefox5.digibooky.api.book;
 
 import com.firefox5.digibooky.domain.book.Author;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
-
-public class BookDTO {
+public class CreateBookDTO {
 
     private final String title;
     private final String isbn;
     private final Author author;
+    private final String smallSummary;
 
-    public BookDTO(String title, String isbn, Author author, String smallSummary) {
+    public CreateBookDTO(String title, String isbn, Author author, String smallSummary) {
         this.title = title;
         this.isbn = isbn;
         this.author = author;
+        this.smallSummary = smallSummary;
     }
 
     public String getTitle() {
@@ -26,5 +26,8 @@ public class BookDTO {
 
     public Author getAuthor() {
         return author;
+    }
+    public String getSmallSummary(){
+        return smallSummary;
     }
 }
