@@ -1,2 +1,3 @@
-package com.firefox5.digibooky.domain.user;public class Adress {
+package com.firefox5.digibooky.domain.user;
+public class Address {
 }
