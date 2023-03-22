@@ -1,2 +1,27 @@
-package com.firefox5.digibooky.security;public enum Feature {
+package com.firefox5.digibooky.security;
+
+public enum Feature {
+    //MUST_HAVE_FEATURES
+    GET_ALL_BOOKS,
+    SHOW_DETAILS_OF_BOOK,
+    REGISTER_A_NEW_BOOK,
+    UPDATE_A_BOOK,
+    DELETE_A_BOOK,
+    LEND_A_BOOK,
+    RETURN_A_BOOK,
+    CHECK_LENT_BOOKS,
+    OVERDUE_BOOKS,
+    ENHANCE_BOOK_DETAILS,
+    ISBN_VALIDATION,
+
+    VIEW_MEMBERS,
+    REGISTER_LIBRARIAN,
+
+    //Nice to have Features
+    REGISTER_A_NEW_ADMIN,
+    OVER_DUE_FINES,
+    ENHANCED_MEMBER_OVERVIEW,
+    BOOK_DAMAGE_FINE,
+    CREATE_MULTIPLE_COPIES_OF_A_BOOK,
+    LENDING_HISTORY_OF_A_BOOK,
 }
