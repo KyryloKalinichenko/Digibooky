@@ -14,9 +14,9 @@ public class UserRepository {
 
     private List<User> listOfUsers = new ArrayList<>
             (List.of(new User("0104199901234", "Jon", "Weak", "killyou@gmail.com",
-                            new Address("Stationstraat", 12, "1800", "Brussels")),
+                            new Address("Stationstraat", 12, "1800", "Brussels"), "123"),
                     new User("0104199901235", "Bob", "Weak", "hotdog@gmail.com",
-                            new Address("Stationstraat", 7, "1800", "Brussels"))
+                            new Address("Stationstraat", 7, "1800", "Brussels"), "123")
             ));
 
     public List<User> getAllUsers() {
@@ -28,7 +28,8 @@ public class UserRepository {
         listOfUsers.add(user);
         return user;
     }
-    public User findUserByEmail(String emailAddress) throws RuntimeException{
+
+    public User getUserByEmail(String emailAddress) throws RuntimeException {
         return listOfUsers.stream()
                 .filter(user -> user.getEmailAddress().equals(emailAddress))
                 .findFirst()
