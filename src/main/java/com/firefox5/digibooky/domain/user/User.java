@@ -2,6 +2,7 @@ package com.firefox5.digibooky.domain.user;
 
 import com.firefox5.digibooky.api.user.UserDTO;
 import com.firefox5.digibooky.api.user.UserPostDTO;
+import com.firefox5.digibooky.security.Feature;
 
 public class User {
     private final String inss;
@@ -11,22 +12,28 @@ public class User {
     private final String lastName;
     private final String emailAddress;
     private final Address address;
+    private final String password;
+    private Role role = Role.MEMBER;
 
-    public User(String inss, String firstName, String lastName, String emailAddress, Address address) {
+
+    public User(String inss, String firstName, String lastName, String emailAddress, Address address, String password) {
         this.inss = inss;
         this.userId = counter++;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.address = address;
+        this.password = password;
     }
-    public User(UserPostDTO userPostDTO){
+
+    public User(UserPostDTO userPostDTO) {
         inss = userPostDTO.getInss();
         userId = counter++;
         firstName = userPostDTO.getFirstName();
         lastName = userPostDTO.getLastName();
         emailAddress = userPostDTO.getEmailAddress();
         address = userPostDTO.getAddress();
+        password = userPostDTO.getPassword();
     }
 
     public final int getUserId() {
@@ -48,7 +55,20 @@ public class User {
     public Address getAddress() {
         return address;
     }
-    public final String getInss(){
+
+    public final String getInss() {
         return inss;
+    }
+
+    public boolean canHaveAccessTo(Feature feature) {
+        return role.containsFeature(feature);
+    }
+
+    public boolean doesPasswordMatch(String passwordToBeChecked) {
+        return this.password.equals(passwordToBeChecked);
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

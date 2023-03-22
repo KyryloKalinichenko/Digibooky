@@ -2,6 +2,7 @@ package com.firefox5.digibooky.security;
 
 public enum Feature {
     //MUST_HAVE_FEATURES
+    GET_ALL_USERS,
     GET_ALL_BOOKS,
     SHOW_DETAILS_OF_BOOK,
     REGISTER_A_NEW_BOOK,
