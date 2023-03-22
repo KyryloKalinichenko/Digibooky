@@ -11,16 +11,19 @@ import java.util.stream.Collectors;
 @Component
 public class BookMapper {
 
-    public BookDTO toDto(Book book){
-        return new BookDTO(
+    public DetailedBookDTO toDetailedDto(Book book){
+        return new DetailedBookDTO(
                 book.getTitle(),
                 book.getIsbn(),
-                book.getAuthor()
+                book.getAuthor(),
+                book.getSmallSummary(),
+                book.getId(),
+                book.getAvailability()
         );
     }
 
-    public DetailedBookDTO toDetailedBookDto(Book book){
-        return new DetailedBookDTO(
+    public BookDTO toDto(Book book){
+        return new BookDTO(
                 book.getTitle(),
                 book.getIsbn(),
                 book.getAuthor(),
@@ -30,13 +33,8 @@ public class BookMapper {
 
     public List<BookDTO> toDtos(List<Book> bookList){
         return bookList.stream()
+                .filter(Book::getAvailability)
                 .map(this::toDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<DetailedBookDTO> toDetailedBookDtos(List<Book> bookList){
-        return bookList.stream()
-                .map(this::toDetailedBookDto)
                 .collect(Collectors.toList());
     }
 }

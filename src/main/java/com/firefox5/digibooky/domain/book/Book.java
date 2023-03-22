@@ -9,13 +9,15 @@ public class Book {
     private static int counter;
     private Author author;
     private String smallSummary;
+    private boolean available;
 
-    public Book(String title, String isbn, Author author, String smallSummary) {
+    public Book(String title, String isbn, Author author, String smallSummary, boolean available) {
         this.title = title;
         this.isbn = isbn;
         id = counter++;
         this.author = author;
         this.smallSummary = smallSummary;
+        this.available = available;
     }
 
     public String getTitle() {
@@ -42,6 +44,11 @@ public class Book {
         return smallSummary;
     }
 
+    public boolean getAvailability(){
+        return available;
+    }
+
+
     public void setAuthor(Author author) {
         this.author = author;
     }
@@ -52,5 +59,8 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+    public void setAvailability(boolean availability){
+        this.available = availability;
     }
 }

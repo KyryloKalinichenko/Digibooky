@@ -6,11 +6,15 @@ public class UpdateBookDTO {
     private final String title;
     private final Author author;
     private final String smallSummary;
+    private final String isbn;
+    private final boolean availability;
 
-    public UpdateBookDTO(String title, Author author, String smallSummary) {
+    public UpdateBookDTO(String title, Author author, String smallSummary, String isbn, boolean availability) {
         this.title = title;
         this.author = author;
         this.smallSummary = smallSummary;
+        this.isbn = isbn;
+        this.availability = availability;
     }
 
     public String getTitle() {
@@ -25,4 +29,11 @@ public class UpdateBookDTO {
         return smallSummary;
     }
 
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public boolean isAvailability() {
+        return availability;
+    }
 }

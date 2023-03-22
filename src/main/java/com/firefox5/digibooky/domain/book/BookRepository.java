@@ -10,11 +10,9 @@ import java.util.Objects;
 @Repository
 public class BookRepository {
     private final List<Book> bookList;
-    private final List<Book> softDeletedBookList;
     
     public BookRepository(){
         this.bookList = new ArrayList<>();
-        this.softDeletedBookList = new ArrayList<>();
     }
     
     
@@ -22,10 +20,14 @@ public class BookRepository {
         bookList.add(book);
         return book;
     }
-    public void delete(int id){
-        bookList.remove(id);
+    public Book delete(Book book){
+        book.setAvailability(false);
+        return book;
     }
-
+    public Book recoverDeletedBook(Book book){
+        book.setAvailability(true);
+        return book;
+    }
 
     public Book getById(int id){
         return bookList.stream()
@@ -33,15 +35,9 @@ public class BookRepository {
                 .findFirst()
                 .get();
     }
-    public List<Book> getByAuthorFirstName(String author){
+    public List<Book> getByAuthor(String author){
         return bookList.stream()
-                .filter(book -> Objects.equals(book.getAuthor().getFirstName(), author))
-                .toList();
-    }
-
-    public List<Book> getByAuthorLastName(String author){
-        return bookList.stream()
-                .filter(book -> Objects.equals(book.getAuthor().getLastName(), author))
+                .filter(book -> Objects.equals(book.getAuthor().toString(), author))
                 .toList();
     }
     public List<Book> getByIsbn(String isbn){
