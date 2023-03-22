@@ -12,6 +12,7 @@ public class User {
     private final String emailAddress;
     private final Address address;
 
+
     public User(String inss, String firstName, String lastName, String emailAddress, Address address) {
         this.inss = inss;
         this.userId = counter++;
