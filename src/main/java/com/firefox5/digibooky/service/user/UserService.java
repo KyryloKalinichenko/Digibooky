@@ -19,12 +19,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<UserDTO> getALlUsers(){
+    public List<UserDTO> getALlUsers() {
         return UserMapper.listOfUsersToListOfUserDTO(userRepository.getAllUsers());
     }
 
 
-    private boolean inputVerification(UserPostDTO userPostDTO){
+    private boolean inputVerification(UserPostDTO userPostDTO) {
         return isInssValid(userPostDTO.getInss())
                 && isEmailValid(userPostDTO.getEmailAddress())
                 && isValidPostcode(userPostDTO.getAddress().getPostalCode())
@@ -41,7 +41,7 @@ public class UserService {
     }
 
     private boolean isInssValid(String inss) {
-        if (inss.length() != 11 || !inss.matches("\\d+")){
+        if (inss == null || inss.length() != 11 || !inss.matches("\\d+")) {
             return false;
         }
         int month, day;
@@ -53,14 +53,14 @@ public class UserService {
             return false;
         return true;
     }
-    private boolean isEmailValid(String emailAddress){
-        return emailAddress.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"); // TO VERIFY
+
+    private boolean isEmailValid(String emailAddress) {
+        return emailAddress != null && emailAddress.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"); // TO VERIFY
     }
     
 
     public UserDTO createUser(UserPostDTO userPostDTO) {
-
-        if(!inputVerification(userPostDTO)){
+        if (!inputVerification(userPostDTO)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Verify the input and try again!");
         }
 

@@ -1,9 +1,13 @@
 package com.firefox5.digibooky.domain.user;
 
+import com.firefox5.digibooky.api.user.UserPostDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserRepository {
@@ -15,11 +19,12 @@ public class UserRepository {
                             new Address("Stationstraat", 7, "1800", "Brussels"))
             ));
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return listOfUsers;
     }
 
     public User addUser(User user) {
+
         listOfUsers.add(user);
         return user;
     }
@@ -28,6 +33,13 @@ public class UserRepository {
                 .filter(user -> user.getEmailAddress().equals(emailAddress))
                 .findFirst()
                 .orElseThrow();
+    }
+
+    public boolean isUnique(UserPostDTO user) {
+        return listOfUsers.stream()
+                .filter(x -> x.getInss() == user.getInss())
+                .findFirst()
+                .isPresent();
     }
 
 
