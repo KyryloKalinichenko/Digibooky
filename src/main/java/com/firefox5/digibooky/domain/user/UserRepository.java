@@ -1,6 +1,9 @@
 package com.firefox5.digibooky.domain.user;
 
+import com.firefox5.digibooky.api.user.UserDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,4 +21,17 @@ public class UserRepository {
     public List<User> getAllUsers(){
         return listOfUsers;
     }
+
+    public User addUser(User user) {
+        listOfUsers.add(user);
+        return user;
+    }
+    public User findUserByEmail(String emailAddress) throws RuntimeException{
+        return listOfUsers.stream()
+                .filter(user -> user.getEmailAddress().equals(emailAddress))
+                .findFirst()
+                .orElseThrow();
+    }
+
+
 }
