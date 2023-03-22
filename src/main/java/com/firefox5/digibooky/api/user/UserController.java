@@ -23,8 +23,8 @@ public class UserController {
     }
 
     @GetMapping("")
-    public List<UserDTO> getAllUsers(@RequestHeader String auth) {
-        securityService.validateAuthorization(auth, Feature.GET_ALL_USERS);
+    public List<UserDTO> getAllUsers(@RequestHeader String authorization) {
+        securityService.validateAuthorization(authorization, Feature.GET_ALL_USERS);
         return userService.getALlUsers();
     }
 

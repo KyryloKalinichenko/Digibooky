@@ -15,7 +15,7 @@ public class User {
     private final String emailAddress;
     private final Address address;
     private final String password;
-    private Role role = Role.MEMBER;
+    private Role role; // = Role.MEMBER;
 
 
 
@@ -28,6 +28,7 @@ public class User {
         this.emailAddress = emailAddress;
         this.address = address;
         this.password = password;
+        this.role = Role.MEMBER;
     }
 
     public User(UserPostDTO userPostDTO) {
@@ -75,6 +76,7 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
 
     @Override
     public boolean equals(Object o) {

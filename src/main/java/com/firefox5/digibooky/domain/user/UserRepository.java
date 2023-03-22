@@ -1,6 +1,7 @@
 package com.firefox5.digibooky.domain.user;
 
 import com.firefox5.digibooky.api.user.UserPostDTO;
+import com.firefox5.digibooky.security.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,7 +34,7 @@ public class UserRepository {
         return listOfUsers.stream()
                 .filter(user -> user.getEmailAddress().equals(emailAddress))
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(()  -> new UserNotFoundException("Unknown username. Please try again"));
     }
 
     public boolean isUnique(UserPostDTO user) {

@@ -23,14 +23,12 @@ public class SecurityService {
     public void validateAuthorization(String authorization, Feature feature){
         Credential decodedAuthorization = decodeAuth(authorization);
         User user = userRepository.getUserByEmail(decodedAuthorization.getEmail());
-        if (user == null){
-            throw new UserNotFoundException();
-        }
+
         if (!user.doesPasswordMatch(decodedAuthorization.getPassword())){
-            throw new WrongPasswordException();
+            throw new WrongPasswordException("Wrong password. Please try again.");
         }
         if (!user.canHaveAccessTo(feature)){
-            throw new UnauthorizedException();
+            throw new UnauthorizedException("Your permission level doesn't authorize this action. Please contact your administrator.");
         }
     }
 
