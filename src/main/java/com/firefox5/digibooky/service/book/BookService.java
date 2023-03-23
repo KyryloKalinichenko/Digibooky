@@ -5,25 +5,37 @@ import com.firefox5.digibooky.api.book.*;
 import com.firefox5.digibooky.domain.book.Book;
 import com.firefox5.digibooky.domain.book.BookRepository;
 import com.firefox5.digibooky.domain.book.LendingInformation;
+import com.firefox5.digibooky.domain.user.UserRepository;
+import com.firefox5.digibooky.service.security.Feature;
+import com.firefox5.digibooky.service.security.SecurityService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
-    private final BookRepository repository;
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
     private final BookMapper mapper;
     private final Parsing parsing;
+    private final SecurityService securityService;
 
-    public BookService(BookRepository repository, BookMapper mapper, Parsing parsing) {
-        this.repository = repository;
+    public BookService(BookRepository repository, BookMapper mapper, Parsing parsing, SecurityService securityService, UserRepository userRepository) {
+        this.bookRepository = repository;
         this.mapper = mapper;
         this.parsing = parsing;
+        this.securityService = securityService;
+        this.userRepository = userRepository;
     }
 
 
     public List<BookDTO> getAllBooks() {
-        return mapper.toDtos(repository.getAll());
+        return mapper.toDtos(bookRepository.getAll());
     }
 
     public List<BookDTO> getABookByIsbn(String isbn) {
@@ -40,20 +52,26 @@ public class BookService {
 
     public DetailedBookDTO getDetailedBookByIsbn(String isbn) {
         try {
-            return mapper.toDetailedDto(repository.getByIsbn(isbn).get(0));
+            return mapper.toDetailedDto(bookRepository.getByIsbn(isbn).get(0));
         } catch (IndexOutOfBoundsException exception) {
             throw new IllegalArgumentException("No book found.");
         }
     }
-/*
-    public BookDTO getEnhancedDetailedBookByIsbn(String isbn){
 
+    private LendingInformation getKeysByValue(Map<LendingInformation, Book> map, Book book) {
+        return map.entrySet()
+                .stream()
+                .filter(entry -> Objects.equals(entry.getValue(), book))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElseThrow();
     }
-*/
+  
+
     /*---Throw exception when no book is found---*/
     public DetailedBookDTO updateABook(UpdateBookDTO updateBookDTO) {
         try {
-            Book updatedBook = repository.getByIsbn(updateBookDTO.getIsbn()).get(0);
+            Book updatedBook = bookRepository.getByIsbn(updateBookDTO.getIsbn()).get(0);
             updatedBook.setTitle(updateBookDTO.getTitle());
             updatedBook.setAuthor(updateBookDTO.getAuthor());
             updatedBook.setSmallSummary(updateBookDTO.getSmallSummary());
@@ -72,30 +90,38 @@ public class BookService {
                 createBookDTO.getAuthor(),
                 createBookDTO.getSmallSummary(),
                 true);
-        repository.save(newBook);
+        bookRepository.save(newBook);
         return mapper.toDto(newBook);
     }
 
     public BookDTO deleteABook(int id) {
-        return mapper.toDto(repository.delete(repository.getById(id)));
+        return mapper.toDto(bookRepository.delete(bookRepository.getById(id)));
     }
 
-/*
-    public DetailedRentedBookDTO lendABook(String isbn){
 
+    public DetailedRentedBookDTO lendABook(String isbn, @RequestHeader String authorization){
+        int userID = securityService.validateAuthorization(authorization, Feature.LEND_A_BOOK);
+        LendingInformation lendingInformation = new LendingInformation(userID, isbn);
+        Book rentedBook = bookRepository.getByIsbn(isbn).get(0);
+        bookRepository.switchToRentList(lendingInformation, rentedBook);
+
+        return mapper.toDetailedRentedBookDTO(
+                lendingInformation,
+                rentedBook,
+                userRepository.getUserById(userID));
     }
-*/
+
     public ReturnedBookDTO returnABook(int lendingID){
-        LendingInformation keyMap = repository.getRentedBooksList()
+        LendingInformation keyMap = bookRepository.getRentedBooksList()
                 .keySet()
                 .stream()
                 .filter(lendingInformation -> lendingInformation.getLendingId() == lendingID)
                 .findFirst()
                 .orElseThrow();
 
-        Book returnedBook = repository.getRentedBooksList().get(keyMap);
+        Book returnedBook = bookRepository.getRentedBooksList().get(keyMap);
         returnedBook.setAvailability(true);
-        repository.getRentedBooksList().remove(keyMap);
+        bookRepository.getRentedBooksList().remove(keyMap);
         return mapper.toReturnedBookDTO(returnedBook);
     }
 }
