@@ -1,6 +1,8 @@
 package com.firefox5.digibooky.domain.user;
 
-import com.firefox5.digibooky.api.user.UserPostDTO;
+import com.firefox5.digibooky.api.user.AdminPostDTO;
+import com.firefox5.digibooky.api.user.MemberPostDTO;
+import com.firefox5.digibooky.api.user.UserDTO;
 import com.firefox5.digibooky.service.security.Feature;
 
 import java.util.Objects;
@@ -14,7 +16,7 @@ public abstract class User {
     private final String emailAddress;
     private final Address address;
     private final String password;
-    private Role role; // = Role.MEMBER;
+    private Role role;
 
 
 
@@ -30,15 +32,27 @@ public abstract class User {
         this.role = role;
     }
 
-    public User(UserPostDTO userPostDTO) {
-        inss = userPostDTO.getInss();
+    public User(AdminPostDTO adminPostDTO) {
+        inss = adminPostDTO.getInss();
         userId = counter++;
-        firstName = userPostDTO.getFirstName();
-        lastName = userPostDTO.getLastName();
-        emailAddress = userPostDTO.getEmailAddress();
-        address = userPostDTO.getAddress();
-        password = userPostDTO.getPassword();
+        firstName = adminPostDTO.getFirstName();
+        lastName = adminPostDTO.getLastName();
+        emailAddress = adminPostDTO.getEmailAddress();
+        address = adminPostDTO.getAddress();
+        password = adminPostDTO.getPassword();
     }
+
+    public User(MemberPostDTO memberPostDTO) {
+        inss = memberPostDTO.getInss();
+        userId = counter++;
+        firstName = memberPostDTO.getFirstName();
+        lastName = memberPostDTO.getLastName();
+        emailAddress = memberPostDTO.getEmailAddress();
+        address = memberPostDTO.getAddress();
+        password = memberPostDTO.getPassword();
+    }
+
+    public abstract UserDTO toDTO();
 
     public final int getUserId() {
         return userId;

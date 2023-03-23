@@ -66,16 +66,7 @@ public class BookService {
                 .findFirst()
                 .orElseThrow();
     }
-
-    public DetailedRentedBookDTO getEnhancedDetailedBookByIsbn(String isbn){
-        Book rentedBook = bookRepository.getRentedBooksList().values()
-                .stream()
-                .filter(book -> book.getIsbn().equals(isbn))
-                .findFirst()
-                .orElseThrow();
-        LendingInformation lendingInformation = getKeysByValue(bookRepository.getRentedBooksList(), rentedBook);
-        return mapper.toDetailedRentedBookDTO(lendingInformation, rentedBook, userRepository.getUserById(lendingInformation.getUserId()));
-    }
+  
 
     /*---Throw exception when no book is found---*/
     public DetailedBookDTO updateABook(UpdateBookDTO updateBookDTO) {

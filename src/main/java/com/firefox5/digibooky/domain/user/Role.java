@@ -11,7 +11,8 @@ public enum Role {
     ADMIN(newArrayList(
             GET_ALL_USERS,
             REGISTER_A_NEW_ADMIN,
-            REGISTER_LIBRARIAN
+            REGISTER_LIBRARIAN,
+            REGISTER_MEMBER
     )),
     LIBRARIAN(newArrayList(
             CHECK_LENT_BOOKS,
