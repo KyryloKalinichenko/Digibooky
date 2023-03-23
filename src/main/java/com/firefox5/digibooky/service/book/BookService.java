@@ -1,12 +1,10 @@
 package com.firefox5.digibooky.service.book;
 
 
-import com.firefox5.digibooky.api.book.BookDTO;
-import com.firefox5.digibooky.api.book.CreateBookDTO;
-import com.firefox5.digibooky.api.book.DetailedBookDTO;
-import com.firefox5.digibooky.api.book.UpdateBookDTO;
+import com.firefox5.digibooky.api.book.*;
 import com.firefox5.digibooky.domain.book.Book;
 import com.firefox5.digibooky.domain.book.BookRepository;
+import com.firefox5.digibooky.domain.book.LendingInformation;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,6 +38,18 @@ public class BookService {
         return parsing.checkForWildcardsInAuthor(author);
     }
 
+    public DetailedBookDTO getDetailedBookByIsbn(String isbn) {
+        try {
+            return mapper.toDetailedDto(repository.getByIsbn(isbn).get(0));
+        } catch (IndexOutOfBoundsException exception) {
+            throw new IllegalArgumentException("No book found.");
+        }
+    }
+
+    public BookDTO getEnhancedDetailedBookByIsbn(String isbn){
+
+    }
+
     /*---Throw exception when no book is found---*/
     public DetailedBookDTO updateABook(UpdateBookDTO updateBookDTO) {
         try {
@@ -70,11 +80,22 @@ public class BookService {
         return mapper.toDto(repository.delete(repository.getById(id)));
     }
 
-    public DetailedBookDTO getDetailedBookByIsbn(String isbn) {
-        try {
-            return mapper.toDetailedDto(repository.getByIsbn(isbn).get(0));
-        } catch (IndexOutOfBoundsException exception) {
-            throw new IllegalArgumentException("No book found.");
-        }
+
+    public DetailedRentedBookDTO lendABook(String isbn){
+
+    }
+
+    public ReturnedBookDTO returnABook(int lendingID){
+        LendingInformation keyMap = repository.getRentedBooksList()
+                .keySet()
+                .stream()
+                .filter(lendingInformation -> lendingInformation.getLendingId() == lendingID)
+                .findFirst()
+                .orElseThrow();
+
+        Book returnedBook = repository.getRentedBooksList().get(keyMap);
+        returnedBook.setAvailability(true);
+        repository.getRentedBooksList().remove(keyMap);
+        return mapper.toReturnedBookDTO(returnedBook);
     }
 }

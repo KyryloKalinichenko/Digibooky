@@ -2,17 +2,16 @@ package com.firefox5.digibooky.domain.book;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Repository
 public class BookRepository {
     private final List<Book> bookList;
+    private final Map<LendingInformation, Book> rentedBooksList;
     
     public BookRepository(){
         this.bookList = new ArrayList<>();
+        this.rentedBooksList = new HashMap<>();
     }
     
     
@@ -24,10 +23,8 @@ public class BookRepository {
         book.setAvailability(false);
         return book;
     }
-    public Book recoverDeletedBook(Book book){
-        book.setAvailability(true);
-        return book;
-    }
+
+
 
     public Book getById(int id){
         return bookList.stream()
@@ -53,5 +50,9 @@ public class BookRepository {
     
     public List<Book> getAll(){
         return bookList;
+    }
+
+    public Map<LendingInformation, Book> getRentedBooksList() {
+        return rentedBooksList;
     }
 }
