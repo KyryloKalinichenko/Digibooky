@@ -22,7 +22,7 @@ public class UserController {
 
     @GetMapping("")
     public List<UserDTO> getAllUsers(@RequestHeader String authorization) {
-        securityService.validateAuthorization(authorization, Feature.GET_ALL_USERS);
+        securityService.validateAuthorization(authorization, Feature.GET_ALL_BOOKS);
         return userService.getALlUsers();
     }
 
