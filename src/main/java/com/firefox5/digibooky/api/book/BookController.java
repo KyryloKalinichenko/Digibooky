@@ -28,11 +28,6 @@ public class BookController {
         return bookService.getDetailedBookByIsbn(isbn);
     }
 
-//    @GetMapping(path = "/{isbn}/showDetails")
-//    public DetailedRentedBookDTO getOneRentedBook(@PathVariable String isbn){
-//        return bookService.getEnhancedDetailedBookByIsbn(isbn);
-//    }
-
     @GetMapping(params = "isbn")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getBookByIsbn(@RequestParam String isbn){

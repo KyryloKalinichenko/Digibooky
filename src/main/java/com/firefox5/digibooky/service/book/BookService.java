@@ -8,10 +8,15 @@ import com.firefox5.digibooky.domain.book.LendingInformation;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
-    private final BookRepository repository;
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
     private final BookMapper mapper;
     private final Parsing parsing;
 
@@ -46,9 +51,24 @@ public class BookService {
         }
     }
 
-//    public BookDTO getEnhancedDetailedBookByIsbn(String isbn){
-//
-//    }
+    private LendingInformation getKeysByValue(Map<LendingInformation, Book> map, Book book) {
+        return map.entrySet()
+                .stream()
+                .filter(entry -> Objects.equals(entry.getValue(), book))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElseThrow();
+    }
+
+    public DetailedRentedBookDTO getEnhancedDetailedBookByIsbn(String isbn){
+        Book rentedBook = bookRepository.getRentedBooksList().values()
+                .stream()
+                .filter(book -> book.getIsbn().equals(isbn))
+                .findFirst()
+                .orElseThrow();
+        LendingInformation lendingInformation = getKeysByValue(bookRepository.getRentedBooksList(), rentedBook);
+        return mapper.toDetailedRentedBookDTO(lendingInformation, rentedBook, userRepository.getUserById(lendingInformation.getUserId()));
+    }
 
     /*---Throw exception when no book is found---*/
     public DetailedBookDTO updateABook(UpdateBookDTO updateBookDTO) {
