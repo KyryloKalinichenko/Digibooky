@@ -1,14 +1,18 @@
 package com.firefox5.digibooky.service.user;
 
+import com.firefox5.digibooky.api.user.AdminPostDTO;
+import com.firefox5.digibooky.api.user.MemberPostDTO;
 import com.firefox5.digibooky.api.user.UserDTO;
-import com.firefox5.digibooky.api.user.UserPostDTO;
+import com.firefox5.digibooky.domain.user.User;
 import com.firefox5.digibooky.domain.user.UserRepository;
-import jakarta.validation.constraints.NotNull;
+import com.firefox5.digibooky.domain.user.roles.Admin;
+import com.firefox5.digibooky.domain.user.roles.Librarian;
+import com.firefox5.digibooky.domain.user.roles.Member;
+import com.firefox5.digibooky.service.security.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -24,11 +28,19 @@ public class UserService {
     }
 
 
-    private boolean inputVerification(UserPostDTO userPostDTO) {
-        return isInssValid(userPostDTO.getInss())
-                && isEmailValid(userPostDTO.getEmailAddress())
-                && isValidPostcode(userPostDTO.getAddress().getPostalCode())
-                && isValidCity(userPostDTO.getAddress().getCity());
+    private boolean inputVerification(AdminPostDTO adminPostDTO) {
+        return isInssValid(adminPostDTO.getInss())
+                && isEmailValid(adminPostDTO.getEmailAddress())
+                && isValidPostcode(adminPostDTO.getAddress().getPostalCode())
+                && isValidCity(adminPostDTO.getAddress().getCity());
+
+    }
+
+    private boolean inputVerification(MemberPostDTO adminPostDTO) {
+        return isInssValid(adminPostDTO.getInss())
+                && isEmailValid(adminPostDTO.getEmailAddress())
+                && isValidPostcode(adminPostDTO.getAddress().getPostalCode())
+                && isValidCity(adminPostDTO.getAddress().getCity());
 
     }
 
@@ -59,12 +71,23 @@ public class UserService {
     }
     
 
-    public UserDTO createUser(UserPostDTO userPostDTO) {
-        if (!inputVerification(userPostDTO)) {
+    public UserDTO createUser(AdminPostDTO adminPostDTO) {
+        if (!inputVerification(adminPostDTO)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Verify the input and try again!");
         }
+        User newUser = switch (adminPostDTO.getRole()){
+            case ADMIN -> new Admin(adminPostDTO);
+            case LIBRARIAN -> new Librarian(adminPostDTO);
+            default -> throw new UnauthorizedException("No such a role!");
+        };
+        return UserMapper.toDTO(userRepository.addUser(newUser));
+    }
 
-
-        return UserMapper.toDTO(userRepository.addUser(UserMapper.toUser(userPostDTO)));
+    public UserDTO createUser(MemberPostDTO memberPostDTO) {
+        if (!inputVerification(memberPostDTO)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Verify the input and try again!");
+        }
+        User newUser = new Member(memberPostDTO);
+        return UserMapper.toDTO(userRepository.addUser(newUser));
     }
 }

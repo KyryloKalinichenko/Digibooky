@@ -1,6 +1,6 @@
 package com.firefox5.digibooky.domain.user;
 
-import com.firefox5.digibooky.api.user.UserPostDTO;
+import com.firefox5.digibooky.api.user.AdminPostDTO;
 import com.firefox5.digibooky.domain.user.roles.Admin;
 import com.firefox5.digibooky.domain.user.roles.Member;
 import com.firefox5.digibooky.service.security.exceptions.UserNotFoundException;
@@ -42,7 +42,7 @@ public class UserRepository {
                 .findFirst()
                 .orElseThrow(()-> new UserNotFoundException("Unknown userID. Please try again."));
     }
-    public boolean isUserExist(UserPostDTO user) {
+    public boolean isUserExist(AdminPostDTO user) {
         return listOfUsers.stream()
                 .filter(x -> x.getInss() == user.getInss())
                 .findFirst()

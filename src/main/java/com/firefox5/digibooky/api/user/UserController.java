@@ -5,6 +5,7 @@ import com.firefox5.digibooky.service.security.SecurityService;
 import com.firefox5.digibooky.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -27,10 +28,16 @@ public class UserController {
     }
 
 
-    @PostMapping(value = "register", produces = "application/json")
+    @PostMapping(value = "register/admin", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO createUser(@RequestBody UserPostDTO userPostDTO) {
-        return userService.createUser(userPostDTO);
+    public UserDTO createAdminOrLibrarian(@RequestHeader String authorization, @RequestBody AdminPostDTO adminPostDTO)
+    {
+        securityService.validateAuthorization(authorization, switch (adminPostDTO.getRole()){
+        case ADMIN -> Feature.REGISTER_A_NEW_ADMIN;
+        case LIBRARIAN -> Feature.REGISTER_LIBRARIAN;
+        default -> throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No such a role!");
+        });
+        return userService.createUser(adminPostDTO);
     }
 
 }

@@ -45,11 +45,11 @@ public class BookService {
             throw new IllegalArgumentException("No book found.");
         }
     }
-
+/*
     public BookDTO getEnhancedDetailedBookByIsbn(String isbn){
 
     }
-
+*/
     /*---Throw exception when no book is found---*/
     public DetailedBookDTO updateABook(UpdateBookDTO updateBookDTO) {
         try {
@@ -80,11 +80,11 @@ public class BookService {
         return mapper.toDto(repository.delete(repository.getById(id)));
     }
 
-
+/*
     public DetailedRentedBookDTO lendABook(String isbn){
 
     }
-
+*/
     public ReturnedBookDTO returnABook(int lendingID){
         LendingInformation keyMap = repository.getRentedBooksList()
                 .keySet()

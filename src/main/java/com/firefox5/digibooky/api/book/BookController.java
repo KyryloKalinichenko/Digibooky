@@ -28,12 +28,12 @@ public class BookController {
     public DetailedBookDTO getOneBook(@PathVariable String isbn){
         return bookService.getDetailedBookByIsbn(isbn);
     }
-
+/*
     @GetMapping(path = "/{isbn}/showDetails")
     public DetailedRentedBookDTO getOneRentedBook(@PathVariable String isbn){
         return bookService.getEnhancedDetailedBookByIsbn(isbn);
     }
-
+*/
     @GetMapping(params = "isbn")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getBookByIsbn(@RequestParam String isbn){
@@ -67,18 +67,18 @@ public class BookController {
         return bookService.deleteABook(id);
     }
 
-    @PutMapping(consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public DetailedBookDTO updateABook(@RequestBody UpdateBookDTO updateBookDTO){
-        return bookService.updateABook(updateBookDTO);
-    }
-
+//    @PutMapping(consumes = "application/json", produces = "application/json")
+//    @ResponseStatus(HttpStatus.OK)
+//    public DetailedBookDTO updateABook(@RequestBody UpdateBookDTO updateBookDTO){
+//        return bookService.updateABook(updateBookDTO);
+//    }
+/*
     @PutMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public DetailedRentedBookDTO lendABook(@RequestBody String isbn){
         return bookService.lendABook(isbn);
     }
-
+*/
     @PutMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public ReturnedBookDTO returnABook(@RequestBody int lendingID){
