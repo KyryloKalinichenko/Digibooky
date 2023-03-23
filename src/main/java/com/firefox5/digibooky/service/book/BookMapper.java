@@ -7,10 +7,14 @@ import com.firefox5.digibooky.api.book.ReturnedBookDTO;
 import com.firefox5.digibooky.domain.book.Book;
 import com.firefox5.digibooky.domain.book.LendingInformation;
 import com.firefox5.digibooky.domain.user.User;
+import com.firefox5.digibooky.domain.user.UserRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class BookMapper {
@@ -48,6 +52,7 @@ public class BookMapper {
                 book.getIsbn(),
                 book.getAuthor(),
                 lendingInformation.getLendingId(),
+                lendingInformation.getDueDate(),
                 book.getAvailability(),
                 user
         );
@@ -59,5 +64,14 @@ public class BookMapper {
                 returnedBook.getIsbn(),
                 returnedBook.getAvailability()
         );
+    }
+
+    public List<DetailedRentedBookDTO> toDetailsRentedBookDTOList(List<LendingInformation> lendingInformations, Map<LendingInformation, Book> bookMap, UserRepository userRepository) {
+        List <DetailedRentedBookDTO> convertedList = new ArrayList<>();
+        lendingInformations.stream()
+                .forEach(keyInfo -> convertedList
+                        .add(toDetailedRentedBookDTO(keyInfo, bookMap.get(keyInfo),
+                                userRepository.getUserById(keyInfo.getUserId()))));
+        return convertedList;
     }
 }

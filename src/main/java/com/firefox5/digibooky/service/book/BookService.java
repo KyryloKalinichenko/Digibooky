@@ -11,6 +11,7 @@ import com.firefox5.digibooky.service.security.SecurityService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -58,6 +59,15 @@ public class BookService {
         }
     }
 
+    public List <DetailedRentedBookDTO> getOverdueBooks(@RequestHeader String authorization){
+        securityService.validateAuthorization(authorization, Feature.OVERDUE_BOOKS);
+        List <LendingInformation> lendingInformation = bookRepository.getRentedBooksList().keySet().stream()
+                .filter(keyInfo-> keyInfo.getDueDate().isAfter(LocalDate.now()))
+                .toList();
+        return mapper.toDetailsRentedBookDTOList(lendingInformation, bookRepository.getRentedBooksList(), userRepository);
+    }
+
+
     private LendingInformation getKeysByValue(Map<LendingInformation, Book> map, Book book) {
         return map.entrySet()
                 .stream()
@@ -67,7 +77,8 @@ public class BookService {
                 .orElseThrow();
     }
 
-    public DetailedRentedBookDTO getEnhancedDetailedBookByIsbn(String isbn){
+    public DetailedRentedBookDTO getEnhancedDetailedBookByIsbn(String isbn, @RequestHeader String authorization){
+        securityService.validateAuthorization(authorization, Feature.ENHANCED_BOOK_DETAILS);
         Book rentedBook = bookRepository.getRentedBooksList().values()
                 .stream()
                 .filter(book -> book.getIsbn().equals(isbn))
@@ -78,7 +89,8 @@ public class BookService {
     }
 
     /*---Throw exception when no book is found---*/
-    public DetailedBookDTO updateABook(UpdateBookDTO updateBookDTO) {
+    public DetailedBookDTO updateABook(UpdateBookDTO updateBookDTO, @RequestHeader String authorization) {
+        securityService.validateAuthorization(authorization, Feature.UPDATE_A_BOOK);
         try {
             Book updatedBook = bookRepository.getByIsbn(updateBookDTO.getIsbn()).get(0);
             updatedBook.setTitle(updateBookDTO.getTitle());
@@ -92,7 +104,8 @@ public class BookService {
     }
 
     /*---If not librarian get a 403 custom message---*/
-    public BookDTO registerABook(CreateBookDTO createBookDTO) {
+    public BookDTO registerABook(CreateBookDTO createBookDTO, @RequestHeader String authorization) {
+        securityService.validateAuthorization(authorization, Feature.REGISTER_A_NEW_BOOK);
         Book newBook = new Book(
                 createBookDTO.getTitle(),
                 createBookDTO.getIsbn(),
@@ -103,7 +116,8 @@ public class BookService {
         return mapper.toDto(newBook);
     }
 
-    public BookDTO deleteABook(int id) {
+    public BookDTO deleteABook(int id, @RequestHeader String authorization) {
+        securityService.validateAuthorization(authorization, Feature.DELETE_A_BOOK);
         return mapper.toDto(bookRepository.delete(bookRepository.getById(id)));
     }
 
@@ -120,14 +134,15 @@ public class BookService {
                 userRepository.getUserById(userID));
     }
 
-    public ReturnedBookDTO returnABook(int lendingID){
+    public ReturnedBookDTO returnABook(int lendingID, @RequestHeader String authorization){
+        securityService.validateAuthorization(authorization, Feature.RETURN_A_BOOK);
         LendingInformation keyMap = bookRepository.getRentedBooksList()
                 .keySet()
                 .stream()
                 .filter(lendingInformation -> lendingInformation.getLendingId() == lendingID)
                 .findFirst()
                 .orElseThrow();
-
+        /*---check due date---*/
         Book returnedBook = bookRepository.getRentedBooksList().get(keyMap);
         returnedBook.setAvailability(true);
         bookRepository.getRentedBooksList().remove(keyMap);
