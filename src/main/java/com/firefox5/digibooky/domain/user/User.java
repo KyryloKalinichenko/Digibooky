@@ -5,7 +5,7 @@ import com.firefox5.digibooky.service.security.Feature;
 
 import java.util.Objects;
 
-public class User {
+public abstract class User {
     private final String inss;
     private static int counter;
     private final int userId;
@@ -18,7 +18,7 @@ public class User {
 
 
 
-    public User(String inss, String firstName, String lastName, String emailAddress, Address address, String password) {
+    public User(String inss, String firstName, String lastName, String emailAddress, Address address, String password, Role role) {
 
         this.inss = inss;
         this.userId = counter++;
@@ -27,7 +27,7 @@ public class User {
         this.emailAddress = emailAddress;
         this.address = address;
         this.password = password;
-        this.role = Role.MEMBER;
+        this.role = role;
     }
 
     public User(UserPostDTO userPostDTO) {
@@ -83,6 +83,10 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(inss, user.inss) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName);
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     @Override

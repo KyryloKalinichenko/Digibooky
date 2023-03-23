@@ -1,6 +1,7 @@
 package com.firefox5.digibooky.api.user;
 
 import com.firefox5.digibooky.domain.user.Address;
+import com.firefox5.digibooky.domain.user.Role;
 import com.firefox5.digibooky.domain.user.User;
 
 public class UserPostDTO {
@@ -11,14 +12,16 @@ public class UserPostDTO {
     private final String emailAddress;
     private final Address address;
     private final String password;
+    private Role role;
 
-    public UserPostDTO(String inss, String firstName, String lastName, String emailAddress, Address address, String password) {
+    public UserPostDTO(String inss, String firstName, String lastName, String emailAddress, Address address, String password, Role role) {
         this.inss = inss;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.address = address;
         this.password = password;
+        this.role = role;
     }
 
     public UserPostDTO(User toCopy) {
@@ -40,6 +43,10 @@ public class UserPostDTO {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public String getEmailAddress() {
