@@ -28,6 +28,11 @@ public class BookController {
         return bookService.getDetailedBookByIsbn(isbn);
     }
 
+    @GetMapping(path = "/{isbn}/showEnhancedDetails")
+    public DetailedRentedBookDTO getOneRentedBook(@PathVariable String isbn){
+        return bookService.getEnhancedDetailedBookByIsbn(isbn);
+    }
+
     @GetMapping(params = "isbn")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getBookByIsbn(@RequestParam String isbn){
@@ -65,11 +70,11 @@ public class BookController {
         return bookService.updateABook(updateBookDTO);
     }
 
-//    @PutMapping(consumes = "application/json", produces = "application/json")
-//    @ResponseStatus(HttpStatus.OK)
-//    public DetailedRentedBookDTO lendABook(@RequestBody String isbn){
-//        return bookService.lendABook(isbn);
-//    }
+    @PutMapping(consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public DetailedRentedBookDTO lendABook(@RequestBody String isbn, @RequestHeader String authorization){
+        return bookService.lendABook(isbn, authorization);
+    }
 
     @PutMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)

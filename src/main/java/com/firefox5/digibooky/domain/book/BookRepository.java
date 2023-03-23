@@ -23,6 +23,11 @@ public class BookRepository {
         book.setAvailability(false);
         return book;
     }
+    public Book switchToRentList(LendingInformation lendingInformation, Book book){
+        rentedBooksList.put(lendingInformation, book);
+        book.setAvailability(false);
+        return book;
+    }
 
 
 
