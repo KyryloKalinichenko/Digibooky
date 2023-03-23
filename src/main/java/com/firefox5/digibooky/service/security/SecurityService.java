@@ -3,9 +3,12 @@ package com.firefox5.digibooky.service.security;
 import com.firefox5.digibooky.domain.user.User;
 import com.firefox5.digibooky.domain.user.UserRepository;
 import com.firefox5.digibooky.service.security.exceptions.UnauthorizedException;
+import com.firefox5.digibooky.service.security.exceptions.UserNotFoundException;
 import com.firefox5.digibooky.service.security.exceptions.WrongPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Base64;
 
