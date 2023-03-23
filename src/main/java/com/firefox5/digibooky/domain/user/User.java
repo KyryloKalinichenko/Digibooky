@@ -16,7 +16,7 @@ public abstract class User {
     private final String emailAddress;
     private final Address address;
     private final String password;
-    private Role role; // = Role.MEMBER;
+    private Role role;
 
 
 

@@ -25,7 +25,6 @@ public class UserRepository {
     }
 
     public User addUser(User user) {
-
         listOfUsers.add(user);
         return user;
     }
@@ -34,7 +33,7 @@ public class UserRepository {
         return listOfUsers.stream()
                 .filter(user -> user.getEmailAddress().equals(emailAddress))
                 .findFirst()
-                .orElseThrow(()  -> new UserNotFoundException("Unknown username. Please try again"));
+                .orElseThrow(()  -> new UserNotFoundException("Unknown user email. Please try again"));
     }
     public User getUserById (int userId) throws RuntimeException {
         return listOfUsers.stream()
@@ -44,10 +43,6 @@ public class UserRepository {
     }
     public boolean isUserExist(AdminPostDTO user) {
         return listOfUsers.stream()
-                .filter(x -> x.getInss() == user.getInss())
-                .findFirst()
-                .isPresent();
+                .anyMatch(x -> x.getInss().equals(user.getInss()));
     }
-
-
 }

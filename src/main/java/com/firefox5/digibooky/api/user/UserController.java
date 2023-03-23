@@ -23,7 +23,7 @@ public class UserController {
 
     @GetMapping("")
     public List<UserDTO> getAllUsers(@RequestHeader String authorization) {
-        securityService.validateAuthorization(authorization, Feature.GET_ALL_BOOKS);
+        securityService.validateAuthorization(authorization, Feature.GET_ALL_USERS);
         return userService.getALlUsers();
     }
 
@@ -40,4 +40,10 @@ public class UserController {
         return userService.createUser(adminPostDTO);
     }
 
+    @PostMapping(value = "register", produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDTO createMember(@RequestBody MemberPostDTO memberPostDTO){
+
+        return userService.createUser(memberPostDTO);
+    }
 }
