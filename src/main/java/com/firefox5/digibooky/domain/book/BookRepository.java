@@ -1,7 +1,6 @@
 package com.firefox5.digibooky.domain.book;
 
 import org.springframework.stereotype.Repository;
-
 import java.util.*;
 
 @Repository
@@ -13,8 +12,7 @@ public class BookRepository {
         this.bookList = new ArrayList<>();
         this.rentedBooksList = new HashMap<>();
     }
-    
-    
+
     public Book save(Book book){
         bookList.add(book);
         return book;
@@ -28,8 +26,6 @@ public class BookRepository {
         book.setAvailability(false);
         return book;
     }
-
-
 
     public Book getById(int id){
         return bookList.stream()
