@@ -46,9 +46,9 @@ public class BookService {
         }
     }
 
-    public BookDTO getEnhancedDetailedBookByIsbn(String isbn){
-
-    }
+//    public BookDTO getEnhancedDetailedBookByIsbn(String isbn){
+//
+//    }
 
     /*---Throw exception when no book is found---*/
     public DetailedBookDTO updateABook(UpdateBookDTO updateBookDTO) {
@@ -81,9 +81,9 @@ public class BookService {
     }
 
 
-    public DetailedRentedBookDTO lendABook(String isbn){
-
-    }
+//    public DetailedRentedBookDTO lendABook(String isbn){
+//
+//    }
 
     public ReturnedBookDTO returnABook(int lendingID){
         LendingInformation keyMap = repository.getRentedBooksList()

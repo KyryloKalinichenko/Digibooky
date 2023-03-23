@@ -1,7 +1,6 @@
 package com.firefox5.digibooky.api.book;
 
 import com.firefox5.digibooky.service.book.BookService;
-import com.firefox5.digibooky.service.security.Feature;
 import com.firefox5.digibooky.service.security.SecurityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +28,10 @@ public class BookController {
         return bookService.getDetailedBookByIsbn(isbn);
     }
 
-    @GetMapping(path = "/{isbn}/showDetails")
-    public DetailedRentedBookDTO getOneRentedBook(@PathVariable String isbn){
-        return bookService.getEnhancedDetailedBookByIsbn(isbn);
-    }
+//    @GetMapping(path = "/{isbn}/showDetails")
+//    public DetailedRentedBookDTO getOneRentedBook(@PathVariable String isbn){
+//        return bookService.getEnhancedDetailedBookByIsbn(isbn);
+//    }
 
     @GetMapping(params = "isbn")
     @ResponseStatus(HttpStatus.OK)
@@ -55,15 +54,13 @@ public class BookController {
     /*---Handling exception---*/
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDTO createBook(@RequestHeader String authorization,@RequestBody CreateBookDTO createBookDTO){
-        securityService.validateAuthorization(authorization, Feature.REGISTER_A_NEW_BOOK);
+    public BookDTO createBook(@RequestBody CreateBookDTO createBookDTO){
         return bookService.registerABook(createBookDTO);
     }
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BookDTO deleteABook(@PathVariable("id") int id){
-
         return bookService.deleteABook(id);
     }
 
@@ -73,11 +70,11 @@ public class BookController {
         return bookService.updateABook(updateBookDTO);
     }
 
-    @PutMapping(consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public DetailedRentedBookDTO lendABook(@RequestBody String isbn){
-        return bookService.lendABook(isbn);
-    }
+//    @PutMapping(consumes = "application/json", produces = "application/json")
+//    @ResponseStatus(HttpStatus.OK)
+//    public DetailedRentedBookDTO lendABook(@RequestBody String isbn){
+//        return bookService.lendABook(isbn);
+//    }
 
     @PutMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
