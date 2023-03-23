@@ -1,9 +1,7 @@
 package com.firefox5.digibooky.api.user;
 
-import com.firefox5.digibooky.domain.user.Address;
-import com.firefox5.digibooky.domain.user.User;
-import com.firefox5.digibooky.security.Feature;
-import com.firefox5.digibooky.security.SecurityService;
+import com.firefox5.digibooky.service.security.Feature;
+import com.firefox5.digibooky.service.security.SecurityService;
 import com.firefox5.digibooky.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +12,8 @@ import java.util.List;
 @RequestMapping("users")
 public class UserController {
 
-    private UserService userService;
-    private SecurityService securityService;
+    private final UserService userService;
+    private final SecurityService securityService;
 
     public UserController(UserService userService, SecurityService securityService) {
         this.userService = userService;
@@ -23,8 +21,8 @@ public class UserController {
     }
 
     @GetMapping("")
-    public List<UserDTO> getAllUsers(@RequestHeader String auth) {
-        securityService.validateAuthorization(auth, Feature.GET_ALL_USERS);
+    public List<UserDTO> getAllUsers(@RequestHeader String authorization) {
+        securityService.validateAuthorization(authorization, Feature.GET_ALL_USERS);
         return userService.getALlUsers();
     }
 

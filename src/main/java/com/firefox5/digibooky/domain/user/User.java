@@ -1,8 +1,7 @@
 package com.firefox5.digibooky.domain.user;
 
-import com.firefox5.digibooky.api.user.UserDTO;
 import com.firefox5.digibooky.api.user.UserPostDTO;
-import com.firefox5.digibooky.security.Feature;
+import com.firefox5.digibooky.service.security.Feature;
 
 import java.util.Objects;
 
@@ -15,7 +14,7 @@ public class User {
     private final String emailAddress;
     private final Address address;
     private final String password;
-    private Role role = Role.MEMBER;
+    private Role role; // = Role.MEMBER;
 
 
 
@@ -28,6 +27,7 @@ public class User {
         this.emailAddress = emailAddress;
         this.address = address;
         this.password = password;
+        this.role = Role.MEMBER;
     }
 
     public User(UserPostDTO userPostDTO) {
@@ -75,6 +75,7 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
 
     @Override
     public boolean equals(Object o) {

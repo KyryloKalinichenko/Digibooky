@@ -1,4 +1,4 @@
-package com.firefox5.digibooky.security;
+package com.firefox5.digibooky.service.security;
 
 public class Credential {
     private final String email;
