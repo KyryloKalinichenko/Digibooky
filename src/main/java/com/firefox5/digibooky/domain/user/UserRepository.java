@@ -1,6 +1,6 @@
 package com.firefox5.digibooky.domain.user;
 
-import com.firefox5.digibooky.api.user.UserPostDTO;
+import com.firefox5.digibooky.api.user.AdminPostDTO;
 import com.firefox5.digibooky.domain.user.roles.Admin;
 import com.firefox5.digibooky.domain.user.roles.Member;
 import com.firefox5.digibooky.service.security.exceptions.UserNotFoundException;
@@ -25,7 +25,6 @@ public class UserRepository {
     }
 
     public User addUser(User user) {
-
         listOfUsers.add(user);
         return user;
     }
@@ -34,7 +33,7 @@ public class UserRepository {
         return listOfUsers.stream()
                 .filter(user -> user.getEmailAddress().equals(emailAddress))
                 .findFirst()
-                .orElseThrow(()  -> new UserNotFoundException("Unknown username. Please try again"));
+                .orElseThrow(()  -> new UserNotFoundException("Unknown user email. Please try again"));
     }
     public User getUserById (int userId) throws RuntimeException {
         return listOfUsers.stream()
@@ -42,12 +41,8 @@ public class UserRepository {
                 .findFirst()
                 .orElseThrow(()-> new UserNotFoundException("Unknown userID. Please try again."));
     }
-    public boolean isUserExist(UserPostDTO user) {
+    public boolean isUserExist(AdminPostDTO user) {
         return listOfUsers.stream()
-                .filter(x -> x.getInss() == user.getInss())
-                .findFirst()
-                .isPresent();
+                .anyMatch(x -> x.getInss().equals(user.getInss()));
     }
-
-
 }

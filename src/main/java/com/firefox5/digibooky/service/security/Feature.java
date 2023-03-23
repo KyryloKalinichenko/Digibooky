@@ -21,6 +21,7 @@ public enum Feature {
     //Nice to have Features
     REGISTER_A_NEW_ADMIN,
     OVER_DUE_FINES,
+    REGISTER_MEMBER,
     ENHANCED_MEMBER_OVERVIEW,
     BOOK_DAMAGE_FINE,
     CREATE_MULTIPLE_COPIES_OF_A_BOOK,

@@ -37,7 +37,6 @@ public class BookController {
     public List<DetailedRentedBookDTO> getAllOverdueBooks(@RequestHeader String authorization){
         return bookService.getOverdueBooks(authorization);
     }
-
     @GetMapping(params = "isbn")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getBookByIsbn(@RequestParam String isbn){
@@ -69,19 +68,19 @@ public class BookController {
         return bookService.deleteABook(id, authorization);
     }
 
-    @PutMapping(consumes = "application/json", produces = "application/json")
+    @PutMapping(path = "/update", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public DetailedBookDTO updateABook(@RequestBody UpdateBookDTO updateBookDTO, @RequestHeader String authorization){
         return bookService.updateABook(updateBookDTO, authorization);
     }
 
-    @PutMapping(consumes = "application/json", produces = "application/json")
+    @PutMapping(path = "/lend", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public DetailedRentedBookDTO lendABook(@RequestBody String isbn, @RequestHeader String authorization){
         return bookService.lendABook(isbn, authorization);
     }
 
-    @PutMapping(consumes = "application/json", produces = "application/json")
+    @PutMapping(path = "/return", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public ReturnedBookDTO returnABook(@RequestBody int lendingID, @RequestHeader String authorization){
         return bookService.returnABook(lendingID, authorization);
