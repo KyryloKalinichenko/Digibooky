@@ -1,4 +1,4 @@
-package com.firefox5.digibooky.security.exceptions;
+package com.firefox5.digibooky.service.security.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

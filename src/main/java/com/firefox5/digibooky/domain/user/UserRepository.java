@@ -1,14 +1,11 @@
 package com.firefox5.digibooky.domain.user;
 
 import com.firefox5.digibooky.api.user.UserPostDTO;
-import com.firefox5.digibooky.security.exceptions.UserNotFoundException;
-import org.springframework.http.HttpStatus;
+import com.firefox5.digibooky.service.security.exceptions.UserNotFoundException;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class UserRepository {

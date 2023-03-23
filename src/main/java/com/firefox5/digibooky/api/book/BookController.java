@@ -1,11 +1,10 @@
 package com.firefox5.digibooky.api.book;
 
-import com.firefox5.digibooky.domain.book.Author;
 import com.firefox5.digibooky.service.book.BookService;
+import com.firefox5.digibooky.service.security.SecurityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -13,9 +12,11 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+    private final SecurityService securityService;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, SecurityService securityService) {
         this.bookService = bookService;
+        this.securityService = securityService;
     }
 
     @GetMapping(produces = "application/json")

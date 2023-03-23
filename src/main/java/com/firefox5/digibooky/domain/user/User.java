@@ -1,8 +1,7 @@
 package com.firefox5.digibooky.domain.user;
 
-import com.firefox5.digibooky.api.user.UserDTO;
 import com.firefox5.digibooky.api.user.UserPostDTO;
-import com.firefox5.digibooky.security.Feature;
+import com.firefox5.digibooky.service.security.Feature;
 
 import java.util.Objects;
 

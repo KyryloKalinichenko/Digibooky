@@ -1,11 +1,9 @@
-package com.firefox5.digibooky.security;
+package com.firefox5.digibooky.service.security;
 
-import com.firefox5.digibooky.domain.book.BookRepository;
 import com.firefox5.digibooky.domain.user.User;
 import com.firefox5.digibooky.domain.user.UserRepository;
-import com.firefox5.digibooky.security.exceptions.UnauthorizedException;
-import com.firefox5.digibooky.security.exceptions.UserNotFoundException;
-import com.firefox5.digibooky.security.exceptions.WrongPasswordException;
+import com.firefox5.digibooky.service.security.exceptions.UnauthorizedException;
+import com.firefox5.digibooky.service.security.exceptions.WrongPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +26,7 @@ public class SecurityService {
             throw new WrongPasswordException("Wrong password. Please try again.");
         }
         if (!user.canHaveAccessTo(feature)){
-            throw new UnauthorizedException("Your permission level doesn't authorize this action. Please contact your administrator.");
+            throw new UnauthorizedException("Permisson denied. Please contact your administrator.");
         }
     }
 
