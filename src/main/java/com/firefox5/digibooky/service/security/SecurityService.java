@@ -18,7 +18,7 @@ public class SecurityService {
         this.userRepository = userRepository;
     }
 
-    public void validateAuthorization(String authorization, Feature feature){
+    public int validateAuthorization(String authorization, Feature feature){
         Credential decodedAuthorization = decodeAuth(authorization);
         User user = userRepository.getUserByEmail(decodedAuthorization.getEmail());
 
@@ -28,6 +28,7 @@ public class SecurityService {
         if (!user.canHaveAccessTo(feature)){
             throw new UnauthorizedException("Permisson denied. Please contact your administrator.");
         }
+        return user.getUserId();
     }
 
     private Credential decodeAuth(String authorization) {

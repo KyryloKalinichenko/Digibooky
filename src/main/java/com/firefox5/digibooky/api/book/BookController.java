@@ -1,6 +1,7 @@
 package com.firefox5.digibooky.api.book;
 
 import com.firefox5.digibooky.service.book.BookService;
+import com.firefox5.digibooky.service.security.Feature;
 import com.firefox5.digibooky.service.security.SecurityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -49,13 +50,15 @@ public class BookController {
     /*---Handling exception---*/
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDTO createBook(@RequestBody CreateBookDTO createBookDTO){
+    public BookDTO createBook(@RequestHeader String authorization,@RequestBody CreateBookDTO createBookDTO){
+        securityService.validateAuthorization(authorization, Feature.REGISTER_A_NEW_BOOK);
         return bookService.registerABook(createBookDTO);
     }
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BookDTO deleteABook(@PathVariable("id") int id){
+
         return bookService.deleteABook(id);
     }
 
