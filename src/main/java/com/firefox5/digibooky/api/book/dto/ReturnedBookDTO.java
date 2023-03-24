@@ -1,4 +1,4 @@
-package com.firefox5.digibooky.api.book;
+package com.firefox5.digibooky.api.book.dto;
 
 public class ReturnedBookDTO {
     private final String title;

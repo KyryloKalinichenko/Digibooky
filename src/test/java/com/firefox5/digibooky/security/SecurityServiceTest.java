@@ -25,16 +25,16 @@ class SecurityServiceTest {
 
         //when
         UserNotFoundException exception = Assertions.assertThrows(UserNotFoundException.class,()->{
-        securityService.validateAuthorization(auth, Feature.DELETE_A_BOOK);
+            securityService.validateAuthorization(auth, Feature.DELETE_A_BOOK);
         });
         //then
-        Assertions.assertEquals("Unknown username. Please try again",exception.getMessage());
+        Assertions.assertEquals("Unknown user email. Please try again",exception.getMessage());
     }
 
     @Test
     void givenAUser_whenPasswordDoesntMatch_thenAnExceptionIsThrown() {
         //given
-        String auth = "Basic a2lsbHlvdUBnbWFpbC5jb206MTI1";
+        String auth = "Basic bWVtYmVyQGdtYWlsLmNvbToxMjQ=";
         //when
         WrongPasswordException exception = Assertions.assertThrows(WrongPasswordException.class,()->{
             securityService.validateAuthorization(auth, Feature.GET_ALL_BOOKS);
@@ -46,12 +46,21 @@ class SecurityServiceTest {
     @Test
     void givenAnAuthorizedUser_whenTheUserHasNoAccessToAFeature_thenAnExceptionIsThrown() {
         //given
-        String auth = "Basic a2lsbHlvdUBnbWFpbC5jb206MTIz";
+        String auth = "Basic bWVtYmVyQGdtYWlsLmNvbToxMjM=";
         //when
         UnauthorizedException exception = Assertions.assertThrows(UnauthorizedException.class,()->{
-            securityService.validateAuthorization(auth, Feature.GET_ALL_BOOKS);
+            securityService.validateAuthorization(auth, Feature.REGISTER_A_NEW_BOOK);
         });
         //then
         Assertions.assertEquals("Permisson denied. Please contact your administrator.",exception.getMessage());
+    }
+    @Test
+    void givenAUserWithValidCredentials_whenTheUserHasAccessToAFeature_thenNoExceptionsThrown() {
+        //given
+        String auth = "Basic YWRtaW5AZ21haWwuY29tOjEyMw==";
+        //when
+        securityService.validateAuthorization(auth,Feature.GET_ALL_USERS);
+        //then
+        Assertions.assertDoesNotThrow(() ->securityService.validateAuthorization(auth,Feature.GET_ALL_USERS));
     }
 }

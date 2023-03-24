@@ -1,4 +1,4 @@
-package com.firefox5.digibooky.api.book;
+package com.firefox5.digibooky.api.book.dto;
 
 import com.firefox5.digibooky.domain.book.Author;
 import com.firefox5.digibooky.domain.user.User;
