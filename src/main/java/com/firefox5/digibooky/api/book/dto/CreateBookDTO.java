@@ -1,23 +1,19 @@
-package com.firefox5.digibooky.api.book;
+package com.firefox5.digibooky.api.book.dto;
 
 import com.firefox5.digibooky.domain.book.Author;
 
-public class DetailedBookDTO {
+public class CreateBookDTO {
 
     private final String title;
     private final String isbn;
     private final Author author;
     private final String smallSummary;
-    private final int id;
-    private boolean available;
 
-    public DetailedBookDTO(String title, String isbn, Author author, String smallSummary, int id, boolean available) {
+    public CreateBookDTO(String title, String isbn, Author author, String smallSummary) {
         this.title = title;
         this.isbn = isbn;
         this.author = author;
         this.smallSummary = smallSummary;
-        this.id = id;
-        this.available = available;
     }
 
     public String getTitle() {
@@ -33,11 +29,5 @@ public class DetailedBookDTO {
     }
     public String getSmallSummary(){
         return smallSummary;
-    }
-    public int getId(){
-        return id;
-    }
-    public boolean getAvailability(){
-        return available;
     }
 }

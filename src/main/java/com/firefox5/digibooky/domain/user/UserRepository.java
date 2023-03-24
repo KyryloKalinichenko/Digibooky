@@ -44,6 +44,12 @@ public class UserRepository {
                 .findFirst()
                 .orElseThrow(()-> new UserNotFoundException("Unknown userID. Please try again."));
     }
+    public User getUserByRole(Role role) throws RuntimeException {
+        return listOfUsers.stream()
+                .filter(user -> user.getRole() == (role))
+                .findFirst()
+                .orElseThrow(()-> new UserNotFoundException("Unknown role. Please try again."));
+    }
     public boolean isUserExist(AdminPostDTO user) {
         return listOfUsers.stream()
                 .anyMatch(x -> x.getInss().equals(user.getInss()));

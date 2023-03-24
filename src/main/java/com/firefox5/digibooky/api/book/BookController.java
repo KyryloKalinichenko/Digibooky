@@ -1,5 +1,6 @@
 package com.firefox5.digibooky.api.book;
 
+import com.firefox5.digibooky.api.book.dto.*;
 import com.firefox5.digibooky.service.book.BookService;
 import com.firefox5.digibooky.service.security.SecurityService;
 import org.springframework.http.HttpStatus;
@@ -25,32 +26,37 @@ public class BookController {
         return bookService.registerABook(createBookDTO, authorization);
     }
 
-
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getAllBooks(){return bookService.getAllBooks();}
+
     @GetMapping(path = "/{isbn}/showDetails")
     public DetailedBookDTO getOneBook(@PathVariable String isbn){
         return bookService.getDetailedBookByIsbn(isbn);
     }
+
     @GetMapping(path = "/{isbn}/showEnhancedDetails")
     public DetailedRentedBookDTO getOneRentedBook(@PathVariable String isbn, @RequestHeader String authorization){
         return bookService.getEnhancedDetailedBookByIsbn(isbn, authorization);
     }
+
     @GetMapping(path = "/showOverdueBooks")
     public List<DetailedRentedBookDTO> getAllOverdueBooks(@RequestHeader String authorization){
         return bookService.getOverdueBooks(authorization);
     }
+
     @GetMapping(params = "isbn")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getBookByIsbn(@RequestParam String isbn){
         return bookService.getABookByIsbn(isbn);
     }
+
     @GetMapping(params = "title")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getBookByTitle(@RequestParam String title){
         return bookService.getABookByTitle(title);
     }
+
     @GetMapping(params = "author")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getBookByAuthor(@RequestParam String author){
@@ -63,18 +69,19 @@ public class BookController {
     public BookDTO deleteABook(@PathVariable("id") int id, @RequestHeader String authorization){
         return bookService.deleteABook(id, authorization);
     }
+
     @PutMapping(path = "/update", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public DetailedBookDTO updateABook(@RequestBody UpdateBookDTO updateBookDTO, @RequestHeader String authorization){
         return bookService.updateABook(updateBookDTO, authorization);
     }
 
-
     @PutMapping(path = "/lend", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public DetailedRentedBookDTO lendABook(@RequestBody String isbn, @RequestHeader String authorization){
-        return bookService.lendABook(isbn, authorization);
+    public DetailedRentedBookDTO lendABook(@RequestBody LendBookDTO lendBookDTO , @RequestHeader String authorization){
+        return bookService.lendABook(lendBookDTO, authorization);
     }
+
     @PutMapping(path = "/return", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public ReturnedBookDTO returnABook(@RequestBody int lendingID, @RequestHeader String authorization){

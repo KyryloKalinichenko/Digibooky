@@ -1,9 +1,9 @@
 package com.firefox5.digibooky.service.book;
 
-import com.firefox5.digibooky.api.book.BookDTO;
-import com.firefox5.digibooky.api.book.DetailedBookDTO;
-import com.firefox5.digibooky.api.book.DetailedRentedBookDTO;
-import com.firefox5.digibooky.api.book.ReturnedBookDTO;
+import com.firefox5.digibooky.api.book.dto.BookDTO;
+import com.firefox5.digibooky.api.book.dto.DetailedBookDTO;
+import com.firefox5.digibooky.api.book.dto.DetailedRentedBookDTO;
+import com.firefox5.digibooky.api.book.dto.ReturnedBookDTO;
 import com.firefox5.digibooky.domain.book.Book;
 import com.firefox5.digibooky.domain.book.LendingInformation;
 import com.firefox5.digibooky.domain.user.User;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class BookMapper {

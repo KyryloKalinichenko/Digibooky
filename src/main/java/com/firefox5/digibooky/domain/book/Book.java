@@ -14,7 +14,7 @@ public class Book {
     public Book(String title, String isbn, Author author, String smallSummary, boolean available) {
         this.title = title;
         this.isbn = isbn;
-        id = counter++;
+        id = ++counter;
         this.author = author;
         this.smallSummary = smallSummary;
         this.available = available;
@@ -63,4 +63,5 @@ public class Book {
     public void setAvailability(boolean availability){
         this.available = availability;
     }
+
 }

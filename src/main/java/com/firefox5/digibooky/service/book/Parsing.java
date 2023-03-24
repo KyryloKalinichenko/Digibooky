@@ -1,6 +1,6 @@
 package com.firefox5.digibooky.service.book;
 
-import com.firefox5.digibooky.api.book.BookDTO;
+import com.firefox5.digibooky.api.book.dto.BookDTO;
 import com.firefox5.digibooky.domain.book.BookRepository;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.firefox5.digibooky.service.book;
+package com.firefox5.digibooky.service.book.exceptions;
 
 import com.firefox5.digibooky.service.security.exceptions.UnauthorizedException;
 import com.sun.net.httpserver.HttpsServer;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -24,4 +25,9 @@ public class BookExceptionsHandler extends ResponseEntityExceptionHandler {
     protected void unauthorizedException(UnauthorizedException exception, HttpServletResponse response) throws  IOException {
         response.sendError(FORBIDDEN.value(), exception.getMessage());
     }
+    @ExceptionHandler(NoSuchElementException.class)
+    protected void entryNotFoundException(NoSuchElementException exception, HttpServletResponse response) throws IOException {
+        response.sendError(NOT_FOUND.value(), exception.getMessage());
+    }
+
 }

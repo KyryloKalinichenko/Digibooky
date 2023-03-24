@@ -1,11 +1,15 @@
 package com.firefox5.digibooky.book.controllertest;
 
-import com.firefox5.digibooky.api.book.BookDTO;
-import com.firefox5.digibooky.api.book.CreateBookDTO;
+import com.firefox5.digibooky.api.book.dto.BookDTO;
+import com.firefox5.digibooky.api.book.dto.UpdateBookDTO;
+import com.firefox5.digibooky.api.book.dto.CreateBookDTO;
+import com.firefox5.digibooky.api.book.dto.DetailedBookDTO;
+import com.firefox5.digibooky.api.book.dto.DetailedRentedBookDTO;
 import com.firefox5.digibooky.domain.book.Author;
 import com.firefox5.digibooky.domain.book.Book;
 import com.firefox5.digibooky.domain.book.BookRepository;
-import com.firefox5.digibooky.service.security.Feature;
+import com.firefox5.digibooky.domain.book.LendingInformation;
+import com.firefox5.digibooky.domain.user.UserRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,11 +25,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("BookController EndToEnd Testing")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class ControllerEndToEndTest {
+public class BookControllerEndToEndTest {
 
     private Book someBook;
     @Autowired
     private BookRepository bookRepository;
+    private UserRepository userRepository;
     @Value("8085")
     private int port;
     @BeforeEach
@@ -352,24 +357,142 @@ public class ControllerEndToEndTest {
     }
 
 
-    @Nested
-    class GetABookWithDetails{}
-
-
-    @Nested
-    class GetARentedBook{}
-
-
-    @Nested
-    class GetAllOverdueBooks{}
-
-
-    @Nested
-    class DeleteABook{}
-
-
-    @Nested
-    class UpdateABook{}
+//    @Nested
+//    class GetABookWithDetails{
+//        @Test
+//        void getOneBookWithDetails(){
+//            DetailedBookDTO result =
+//                    RestAssured
+//                            .given()
+//                            .when()
+//                            .port(port)
+//                            .get("/books?isbn=1234567891234/showDetails")
+//                            .then()
+//                            .assertThat()
+//                            .statusCode(HttpStatus.OK.value())
+//                            .extract()
+//                            .as(DetailedBookDTO.class);
+//
+//            assertThat(result).isNotNull();
+//            /*---Test a list compared to an object---*/
+//        }
+//    }
+//
+//
+//    @Nested
+//    class GetARentedBook{
+//        @Test
+//        void getOneRentedBook(){
+//            LendingInformation lendingInformation = new LendingInformation(1, "1234567891234");
+//            bookRepository.switchToRentList(lendingInformation, someBook);
+//
+//            DetailedRentedBookDTO result =
+//                    RestAssured
+//                            .given()
+//                            .auth()
+//                            .preemptive()
+//                            .basic("librarian@gmail.com", "123")
+//                            .when()
+//                            .port(port)
+//                            .get("/books?isbn=1234567891234/showEnhancedDetails")
+//                            .then()
+//                            .assertThat()
+//                            .statusCode(HttpStatus.OK.value())
+//                            .extract()
+//                            .as(DetailedRentedBookDTO.class);
+//
+//            assertThat(result).isNotNull();
+//            /*---Test a list compared to an object---*/
+//        }
+//    }
+//
+//
+//    @Nested
+//    class GetAListOfOverdueBooks{
+//        @Test
+//        void GetAllOverdueBooks(){
+//            LendingInformation lendingInformation = new LendingInformation(1, "1234567891234");
+//            bookRepository.switchToRentList(lendingInformation, someBook);
+//
+//            DetailedRentedBookDTO[] result =
+//                    RestAssured
+//                            .given()
+//                            .auth()
+//                            .preemptive()
+//                            .basic("librarian@gmail.com", "123")
+//                            .when()
+//                            .port(port)
+//                            .get("/books?isbn=1234567891234/showEnhancedDetails")
+//                            .then()
+//                            .assertThat()
+//                            .statusCode(HttpStatus.OK.value())
+//                            .extract()
+//                            .as(DetailedRentedBookDTO[].class);
+//
+//            assertThat(result)
+//                    .isNotNull()
+//                    .isNotEmpty();
+//            /*---Test a list compared to an object---*/
+//        }
+//    }
+//
+//
+//    @Nested
+//    class DeleteABook{
+//        @Test
+//        void DeleteOneBook(){
+//            DetailedRentedBookDTO result =
+//                    RestAssured
+//                            .given()
+//                            .auth()
+//                            .preemptive()
+//                            .basic("librarian@gmail.com", "123")
+//                            .when()
+//                            .port(port)
+//                            .delete("/books?id=1")
+//                            .then()
+//                            .assertThat()
+//                            .statusCode(HttpStatus.OK.value())
+//                            .extract()
+//                            .as(DetailedRentedBookDTO.class);
+//
+//            assertThat(result).isNotNull();
+//            /*---Test a list compared to an object---*/
+//        }
+//    }
+//
+//
+//    @Nested
+//    class UpdateABook{
+//        @Test
+//        void UpdateOneBook(){
+//            UpdateBookDTO updateBookDTO = new UpdateBookDTO(
+//                    "It",
+//                    new Author("Stephen", "King"),
+//                    "a book about a clown",
+//                    "1234567891234",
+//                    true);
+//
+//            DetailedBookDTO result =
+//                    RestAssured
+//                            .given()
+//                            .auth()
+//                            .preemptive()
+//                            .basic("librarian@gmail.com", "123")
+//                            .body(updateBookDTO)
+//                            .when()
+//                            .port(port)
+//                            .delete("/books/update")
+//                            .then()
+//                            .assertThat()
+//                            .statusCode(HttpStatus.OK.value())
+//                            .extract()
+//                            .as(DetailedBookDTO.class);
+//
+//            assertThat(result).isNotNull();
+//            /*---Test a list compared to an object---*/
+//        }
+//    }
 
 
     @Nested
