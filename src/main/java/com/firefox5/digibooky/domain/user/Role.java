@@ -26,7 +26,6 @@ public enum Role {
     MEMBER(newArrayList(
             ENHANCED_BOOK_DETAILS,
             LEND_A_BOOK,
-            REGISTER_A_NEW_BOOK,
             RETURN_A_BOOK
     ));
     private List<Feature> featureList;

@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -61,9 +61,7 @@ public class UserService {
         month = Integer.parseInt(inss.substring(2, 4));
         day = Integer.parseInt(inss.substring(4, 6));
 
-        if (month < 1 || month > 12 || day < 1 || day > 31)
-            return false;
-        return true;
+        return month >= 1 && month <= 12 && day >= 1 && day <= 31;
     }
 
     private boolean isEmailValid(String emailAddress) {
